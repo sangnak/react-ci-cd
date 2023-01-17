@@ -1,8 +1,8 @@
-name: Continuous Deployment
+name: Continuous Deployment 
 
 on:
   push:
-    branches:
+    branch
       - master
       - develop
       
@@ -21,9 +21,23 @@ on:
           run: yarn        
         - name: Build
           run: yarn build        
-        - name: Deploy
+        - name: Deploy staging
+          if: github.ref == 'refs/heads/develop'
           uses: jakejarvis/s3-sync-action@v0.5.0
           with:
             args: --acl public-read --follow-symlinks --delete
           env:
-            AWS_S3_BUCKET: ${{ secrets.STAGING_AWS_S3_BUCKET }}
+            AWS_S3_BUCKET: ${{ secrets.STAGING_AWS_S3_BUCKET }}  
+            
+          
+        # - name: Deploy production
+    
+        #   uses: jakejarvis/s3-sync-action@v0.5.0
+        #   with:
+        #     args: --acl public-read --follow-symlinks --delete
+        #   env:
+        #     AWS_S3_BUCKET: ${{ secrets.STAGING_AWS_S3_BUCKET }}
+
+
+
+
